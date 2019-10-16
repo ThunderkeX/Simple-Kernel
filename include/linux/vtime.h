@@ -28,16 +28,18 @@ static inline bool vtime_accounting_enabled(void)
 	return context_tracking_is_enabled();
 }
 
+static inline bool vtime_accounting_enabled_cpu(int cpu)
+{
+	return (vtime_accounting_enabled() && context_tracking_enabled_cpu(cpu));
+}
+
 static inline bool vtime_accounting_enabled_this_cpu(void)
 {
-	if (vtime_accounting_enabled()) {
-		if (context_tracking_cpu_is_enabled())
-			return true;
-	}
-
-	return false;
+	return (vtime_accounting_enabled() && context_tracking_enabled_this_cpu());
 }
 #else /* !CONFIG_VIRT_CPU_ACCOUNTING */
+
+static inline bool vtime_accounting_enabled_cpu(int cpu) {return false; }
 static inline bool vtime_accounting_enabled_this_cpu(void) { return false; }
 #endif
 
