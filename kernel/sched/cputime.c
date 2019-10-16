@@ -869,8 +869,8 @@ void task_cputime(struct task_struct *t, u64 *utime, u64 *stime)
 		delta = vtime_delta(vtime);
 
 		/*
-		 * Task runs either in user or kernel space, add pending nohz time to
-		 * the right place.
+		 * Task runs either in user (including guest) or kernel space,
+		 * add pending nohz time to the right place.
 		 */
 		if (vtime->state == VTIME_USER || t->flags & PF_VCPU)
 			*utime += delta;
